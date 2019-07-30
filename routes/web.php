@@ -14,3 +14,17 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::group(['middleware' => ['web', 'MsGraphAuthenticated']], function(){
+    Route::get('msgraph', function(){
+        return MsGraph::get('me');
+    });
+});
+
+Route::get('msgraph/oauth', function(){
+    return MsGraph::connect();
+});
+
+Route::get('/home', 'HomeController@index')->name('home');
